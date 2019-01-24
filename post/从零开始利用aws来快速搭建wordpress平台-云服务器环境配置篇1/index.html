@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1) &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://wyshao.github.io/myblog/favicon.ico" />
+    <link rel="canonical" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%871/" />
+
+     <meta name="description" content="&lt;p&gt;&lt;font size =4&gt;《从零开始利用AWS来快速搭建WordPress平台&amp;mdash;云服务器搭建篇》上一篇主要介绍了如何在AWS上搭建一个云服务器，也就是创建一个EC2实例。接下来进一步介绍云服务器相关环境配置，如Apache, PHP, XCache, FTP的安装。&lt;/br&gt;
+&lt;strong&gt;第一部" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="https://wyshao.github.io/myblog/img/amazon1.jpg"/>
+    
+ 
+    <meta name="twitter:title" content="从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1)"/>
+    <meta name="twitter:description" content="&lt;p&gt;&lt;font size =4&gt;《从零开始利用AWS来快速搭建WordPress平台&amp;mdash;云服务器搭建篇》上一篇主要介绍了如何在AWS上搭建一个云服务器，也就是创建一个EC2实例。接下来进一步介绍云服务器相关环境配置，如Apache, PHP, XCache, FTP的安装。&lt;/br&gt;
+&lt;strong&gt;第一部"/>
+    <meta name="twitter:url" content="https://wyshao.github.io/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%871/" />
+    <meta name="twitter:site" content="@faketryghost"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1) &middot; Hugo Casper Two" />
+    <meta property="og:url" content="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%871/" />
+    <meta property="article:publisher" content="https://www.facebook.com/fakeghost" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="&lt;p&gt;&lt;font size =4&gt;《从零开始利用AWS来快速搭建WordPress平台&amp;mdash;云服务器搭建篇》上一篇主要介绍了如何在AWS上搭建一个云服务器，也就是创建一个EC2实例。接下来进一步介绍云服务器相关环境配置，如Apache, PHP, XCache, FTP的安装。&lt;/br&gt;
+&lt;strong&gt;第一部" />
+
+    <meta property="article:published_time" content="2014-03-10T00:00:00Z" />
+    <meta property="article:tag" content="Amazon" /><meta property="article:tag" content="云服务器" /><meta property="article:tag" content="wordpress" />
+
+    <meta property="og:image" content="https://wyshao.github.io/myblog/img/amazon1.jpg"/>
+
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Hugo Casper Two" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/">主页</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/about/">关于我</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/categories/">类别</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://www.zhihu.com/people/Lily_ChouChou/">更多</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    <a class="social-link social-link-fb" href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg></a>
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/faketryghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2014-03-10">10 March 2014</time>
+                <span class="date-divider">/</span> <a href="https://wyshao.github.io/myblog/tags/amazon/">#Amazon</a>&nbsp;<a href="https://wyshao.github.io/myblog/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">#云服务器</a>&nbsp;
+        </section>
+        <h1 class="post-full-title">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1)</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(https://wyshao.github.io/myblog/img/amazon1.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        <p><font size =4>《从零开始利用AWS来快速搭建WordPress平台&mdash;云服务器搭建篇》上一篇主要介绍了如何在AWS上搭建一个云服务器，也就是创建一个EC2实例。接下来进一步介绍云服务器相关环境配置，如Apache, PHP, XCache, FTP的安装。</br>
+<strong>第一部分 Window系统下PuTTY工具连接云服务器</strong> </p>
+
+<p>首先我们需要用PuTTY工具来连接云服务器，这样才输入Linux相关的命令进行环境配置。《从零开始利用AWS来快速搭建WordPress平台&mdash;准备篇》文中“常用工具”这一小节对PuTTY工具的下载进行了相关说明，请自行参阅。</br>
+<strong>注意</strong>：这里还需要《从零开始利用AWS来快速搭建WordPress平台&mdash;云服务器搭建篇》文中第七步中密钥对文件（后缀名*.pem），所以请事先准备好。</br>
+接下来将分步进行详细说明。</br>
+<strong>第一步</strong>，安装好PuTTY工具后，首先单击“PuTTYgen” ，打开PuTTY Key Generator，如下两幅图所示:</br>
+<img src ="../../img/post5/figure1.PNG" style="width:25%;" >
+<img src ="../../img/post5/figure2.png" style="width:45%;" >
+<strong>第二步</strong>，选择默认的类型RSA，然后单击“Load”找到事先准备好的密钥对文件&rdquo;.pem&rdquo;，然后选择，确定，如下图所示
+<img src ="../../img/post5/figure3.PNG" style="width:45%;" >
+<img src ="../../img/post5/figure4.PNG" style="width:45%;" >
+<strong>第三步</strong>，这时，点击下图的“Save private key”按钮，将密钥对文件（.pem）转换成一个&rdquo;.ppk&rdquo;的文件（命名并保存在你自己想放的地方）。
+<img src ="../../img/post5/figure5.PNG" style="width:45%;" >
+<img src ="../../img/post5/figure6.PNG" style="width:45%;" >
+<strong>第四步</strong>，单击“PuTTY”打开PuTTY Configuration, 接着在puTTY中的“Host Name(or IP Address)”中填写你在AWS中创建的云服务器的Public DNS或者Public IP(详细见《从零开始利用AWS来快速搭建WordPress平台&mdash;云服务器搭建篇》这一篇中第七步“审核”中的IP和DNS说明)，这里以填入Public IP为例来登入。然后展开puTTY左侧框中的SSH选项卡，找到Auth选项，然后点击Browse，选择刚才保存的那个&rdquo;.ppk&rdquo;文件。然后点击Open，如下图所示。
+<img src ="../../img/post5/figure7.PNG" style="width:25%;" >
+<img src ="../../img/post5/figure8.PNG" style="width:45%;" >
+<img src ="../../img/post5/figure9.PNG" style="width:45%;" >
+<strong>第五步</strong>，此时或跳出命令行登录窗口，需要你输入EC2服务器上的默认账户，无需输入密码。最后在login as: 后面输入&rdquo; ubuntu&rdquo;，就会出现如下图所示的界面：
+<img src ="../../img/post5/figure10.PNG" style="width:55%;" >
+<img src ="../../img/post5/figure11.PNG" style="width:55%;" >
+<strong>注意</strong>，默认账户根据申请EC2时选择的AMI(亚马逊机器镜像）的不同而不同
+默认账户说明如下：</br></p>
+
+<blockquote>
+<p>每个 Linux 实例类型均使用默认 Linux 系统用户账户启动：</br>
+对于 Amazon Linux，用户名称是 ec2-user；</br>
+对于 RHEL5，用户名称是 root 或 ec2-user；</br>
+对于 Ubuntu，用户名称是 ubuntu；</br>
+对于 Fedora，用户名称是 fedora或 ec2-user；</br>
+对于 SUSE Linux，用户名称是 root 或 ec2-user；</br>
+另外，如果 ec2-user 和 root 无法使用，需要与 AMI 供应商核实。</br></p>
+</blockquote>
+
+<p><strong>第二部分 利用PuTTY工具在云服务器安装Apache, PHP, XCache, FTP等</strong>
+接下来在命令行界面输入</p>
+
+<pre><code>sudo su
+</code></pre>
+
+<ol>
+<li><p>进入root账户，如下图所示
+<img src ="../../img/post5/figure12.PNG" style="width:55%;" >
+然后再输入指令</p>
+
+<p>apt-get update</p></li>
+</ol>
+
+<p>来更新源信息。
+2. 安装Apache到云服务器
+如下图所示，为了安装 Apache，输入指令</p>
+
+<pre><code>apt-get install apache2
+</code></pre>
+
+<p><img src ="../../img/post5/figure13.PNG" style="width:55%;" >
+3. 安装完成后，在浏览器中输入EC2云服务器的Public DNS地址就会出现Apache的默认页面了，如下图所示
+<img src ="../../img/post5/figure14.PNG" style="width:55%;" >
+4. 接下来进行 <strong>PHP安装</strong>，这里输入 指令，如下图所示</p>
+
+<pre><code>apt-get install php5
+</code></pre>
+
+<p><img src ="../../img/post5/figure15.PNG" style="width:55%;" >
+5. 为了让PHP支 <strong>MySQL</strong>。依次输入以下指令即可：</p>
+
+<pre><code>apt-get install libapache2-mod-auth-mysql
+apt-get install php5-mysql
+apt-get install php5-gd
+</code></pre>
+
+<ol>
+<li><p>之后重启Apache。输入下列指令：</p>
+
+<p>service apache2 restart</p></li>
+
+<li><p>为了测试PHP，这里建立一个探针文件。输入下列指令，如下图所示</p>
+
+<p>vi /var/www/html/info.php</p></li>
+</ol>
+
+<p><img src ="../../img/post5/figure16.PNG" style="width:55%;" >
+然后输入，</p>
+
+<pre><code>&lt;?php
+phpinfo();
+?&gt;
+</code></pre>
+
+<p>输入完成后按ESC键退出编辑模式，切换成大写模式，双击两次Z键即可保存退出。之后就可在浏览器输入Public IP/info.php的地址格式，即可查看，如下图所示。
+<img src ="../../img/post5/figure17.PNG" style="width:55%;" >
+8. 之后安装 XCache 优化缓存。输入下列指令</p>
+
+<pre><code>apt-get install php5-xcache
+</code></pre>
+
+<p>如下图所示，然后重启Apache
+<img src ="../../img/post5/figure18.PNG" style="width:55%;" >
+9. 下面开始配置FTP。
+a. 安装vsftp后， vsftp默认会创建一个名为ftp的用户，用户目录在/srv/ftp，好像匿名用户也会使用这个设置。
+<strong>全新安装指令</strong></p>
+
+<pre><code>apt-get install vsftpd
+</code></pre>
+
+<p><img src ="../../img/post5/figure19.PNG" style="width:55%;" >
+<strong>小提示TIPs</strong>
+重新安装指令</p>
+
+<pre><code>apt-get –reinstall install vsftpd
+</code></pre>
+
+<p>卸载并清除配置文件指令</p>
+
+<pre><code>apt-get -purge remove vsftpd
+</code></pre>
+
+<p>卸载并清除配置文件指令
+b. 启动、停止vsftp
+如下图所示，为了启动vsftp，输入指令</p>
+
+<pre><code> service vsftpd start
+</code></pre>
+
+<p><img src ="../../img/post5/figure20.PNG" style="width:55%;" >
+c. 创建ftp用户组和目录
+i. 创建FTP用户组ftp-user, 输入指令</p>
+
+<pre><code> groupadd ftp-users
+</code></pre>
+
+<p>ii. 修改权限, 输入指令</p>
+
+<pre><code> chmod 777 /var/www
+</code></pre>
+
+<p>iii. 指定文件夹归属用户和用户组, 输入指令</p>
+
+<pre><code> ftp-users /var/www
+</code></pre>
+
+<p>如果只是自己使用也可以输入</p>
+
+<pre><code> ftp-users /
+</code></pre>
+
+<p>iv. 输入指令添加用户名yourname（自定义）</p>
+
+<pre><code>useradd -g ftp-users -d / yourname
+</code></pre>
+
+<p>输入以下指令后，会显示输入密码的提示（Enter new UNIX password）</p>
+
+<pre><code>passwd yourname
+</code></pre>
+
+<blockquote>
+<p>Enter new UNIX password:（输入密码，屏幕上不显示输入字符过程）
+Retype new UNIX password:（重复一次密码，屏幕上不显示输入字符过程）
+passwd: password updated successfully</p>
+</blockquote>
+
+<p>v. 最后输入指令重启服务</p>
+
+<pre><code>service vsftpd restart
+</code></pre>
+
+<p><strong>注意</strong>：如果在FTP软件中连接服务器会提示530Login incorrect，这是因为ubuntu启用了PAM，所在用到vsftp时需要用到 /etc/pam.d/vsftpd 这个文件（默认源码安装的不会有这个文件），因此除了匿名用户外本地用户无法登录。所以只要删除了就可以了。输入以下指令即可</p>
+
+<pre><code>rm /etc/pam.d/vsftpd
+</code></pre>
+
+<p>vi. 此时输入以下指令，即可登陆到FTP服务器了，注意指令中的IP地址要换成你自己云 服务器的public IP。</p>
+
+<pre><code>ftp 192.168.1.1
+</code></pre>
+
+<p><b>有价值的参考出处</b></br>
+<a href="https://blog.csdn.net/biboshouyu/article/details/76068127">windows系统上利用putty通过SSH连接亚马逊AWS服务器 - CSDN博客</a></br>
+<a href="https://blog.csdn.net/LiuXingSiYe/article/details/49943311">AWS免费云主机之如何使用putty登录</a></br>
+<a href="https://huyangjia.com/build-wordpress-ec2-environment-configuration-and-ftp-configuration-using-aws-ec2rds.html">利用 AWS EC2+RDS 搭建WordPress （三）EC2环境配置以及FTP配置</a></p>
+
+<p><center><b>未经本作者同意，请勿以任何形式复制本篇文章内容，欢迎转载和参考，并请注明出处，谢谢! </b></center></font></br></p>
+
+<hr />
+
+<p><font size =4>您也可以请我喝一杯咖啡,支持我的创作~</br></br>
+<b>比特币（BTC）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>比特币现金（BCH）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>Ethereum (ETH)</b>: 0x5061c5ddeb4f82e3070a4bd593d2b1cc90d1bfc4</br></p>    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="https://wyshao.github.io/">Lily Chouchou</a></h4>
+                <p></p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(https://wyshao.github.io/myblog/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; Hugo Casper Two &mdash;</small>
+        
+        <h3 class="read-next-card-header-title"><a href="https://wyshao.github.io/myblog/tags/amazon/">#Amazon</a></h3>
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+          <li><a href="https://wyshao.github.io/myblog/post/%E5%BE%AE%E5%A6%99%E7%9A%84%E6%97%A5%E6%9C%AC%E5%A4%A7%E5%AD%A6%E7%9A%84%E6%95%99%E5%91%98%E8%81%8C%E4%BD%8D%E5%8A%A9%E6%95%99-%E5%8F%AA%E4%B8%BA%E6%9B%B4%E7%9C%9F%E5%AE%9E%E7%9A%84%E4%BA%86%E8%A7%A3/">微妙的日本大学的教员职位”助教“---只为更真实的了解</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/guerilla-open-access-manifesto/">Guerilla Open Access Manifesto</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---准备篇</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/">无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</a></li>            
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+        <a href="https://wyshao.github.io/myblog/tags/amazon/">See all related posts →</a>
+    </footer>
+</article>
+
+
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/writing.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Amazon 
+              #wordpress 
+              #云服务 
+              #development  </span>
+              
+              <h2 class="post-card-title">从零开始利用AWS来快速搭建WordPress平台---云服务器搭建篇</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>《开始利用AWS来快速搭建WordPress平台&mdash;准备篇》上一篇主要介绍了搭建平台 前的常用工具与AWS账号注册。接下来介绍在AWS EC2里创建实例和其他相关设置，从而搭建一个云服务器。 登陆AWS控制台后，会看到如下界面，找到“Launch a virtual machine”这一选项，并单击创建一个AMI（Amazon Machine Image）主机镜像。 ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%872/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/amazon.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%872/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Amazon 
+              #云服务器 
+              #wordpress  </span>
+              
+              <h2 class="post-card-title">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(2)</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>《从零开始利用AWS来快速搭建WordPress平台&mdash;云服务器环境配置篇(1)》上一篇很详细地介绍AWS EC2云服务器相关环境配置，如Apache, PHP, XCache, FTP的安装。接下来在云服务器上对AWS里提供的RDS数据库进行相关配置。
+ ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="https://wyshao.github.io/">
+      <img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1)</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=%e4%bb%8e%e9%9b%b6%e5%bc%80%e5%a7%8b%e5%88%a9%e7%94%a8AWS%e6%9d%a5%e5%bf%ab%e9%80%9f%e6%90%ad%e5%bb%baWordPress%e5%b9%b3%e5%8f%b0---%e4%ba%91%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae%e7%af%87%281%29&amp;url=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E4%25BB%258E%25E9%259B%25B6%25E5%25BC%2580%25E5%25A7%258B%25E5%2588%25A9%25E7%2594%25A8aws%25E6%259D%25A5%25E5%25BF%25AB%25E9%2580%259F%25E6%2590%25AD%25E5%25BB%25BAwordpress%25E5%25B9%25B3%25E5%258F%25B0-%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E7%258E%25AF%25E5%25A2%2583%25E9%2585%258D%25E7%25BD%25AE%25E7%25AF%25871%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E4%25BB%258E%25E9%259B%25B6%25E5%25BC%2580%25E5%25A7%258B%25E5%2588%25A9%25E7%2594%25A8aws%25E6%259D%25A5%25E5%25BF%25AB%25E9%2580%259F%25E6%2590%25AD%25E5%25BB%25BAwordpress%25E5%25B9%25B3%25E5%258F%25B0-%25E4%25BA%2591%25E6%259C%258D%25E5%258A%25A1%25E5%2599%25A8%25E7%258E%25AF%25E5%25A2%2583%25E9%2585%258D%25E7%25BD%25AE%25E7%25AF%25871%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="https://wyshao.github.io/myblog/">Lily Chouchou</a> © 2018 <br>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="https://wyshao.github.io/myblog/">Latest Posts</a>
+        <a href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://twitter.com/faketryghost" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/Lily" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://wyshao.github.io/myblog/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

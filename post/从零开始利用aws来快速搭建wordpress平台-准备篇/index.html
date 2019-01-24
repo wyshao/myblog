@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>从零开始利用AWS来快速搭建WordPress平台---准备篇 &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://wyshao.github.io/myblog/favicon.ico" />
+    <link rel="canonical" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/" />
+
+     <meta name="description" content="&lt;p&gt;&lt;font size =4&gt;AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。&lt;/font&gt;&lt;/p&gt;" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="https://wyshao.github.io/myblog/img/amazon2.jpg"/>
+    
+ 
+    <meta name="twitter:title" content="从零开始利用AWS来快速搭建WordPress平台---准备篇"/>
+    <meta name="twitter:description" content="&lt;p&gt;&lt;font size =4&gt;AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。&lt;/font&gt;&lt;/p&gt;"/>
+    <meta name="twitter:url" content="https://wyshao.github.io/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/" />
+    <meta name="twitter:site" content="@faketryghost"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="从零开始利用AWS来快速搭建WordPress平台---准备篇 &middot; Hugo Casper Two" />
+    <meta property="og:url" content="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/" />
+    <meta property="article:publisher" content="https://www.facebook.com/fakeghost" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="&lt;p&gt;&lt;font size =4&gt;AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。&lt;/font&gt;&lt;/p&gt;" />
+
+    <meta property="article:published_time" content="2014-09-25T00:00:00Z" />
+    <meta property="article:tag" content="Amazon" /><meta property="article:tag" content="云服务器" /><meta property="article:tag" content="wordpress" />
+
+    <meta property="og:image" content="https://wyshao.github.io/myblog/img/amazon2.jpg"/>
+
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Hugo Casper Two" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/">主页</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/about/">关于我</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/categories/">类别</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://www.zhihu.com/people/Lily_ChouChou/">更多</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    <a class="social-link social-link-fb" href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg></a>
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/faketryghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2014-09-25">25 September 2014</time>
+                <span class="date-divider">/</span> <a href="https://wyshao.github.io/myblog/tags/amazon/">#Amazon</a>&nbsp;<a href="https://wyshao.github.io/myblog/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">#云服务器</a>&nbsp;
+        </section>
+        <h1 class="post-full-title">从零开始利用AWS来快速搭建WordPress平台---准备篇</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(https://wyshao.github.io/myblog/img/amazon2.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        <p><font size =4>AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。</font></p>
+
+<p><font size =4>对于Linux系统以及服务器配置并不熟悉的人（如笔者）来说，通过阅读这些教程或经验来完成想要的功能简直无从下手。本篇主要介绍手动搭建前的准备事项：<strong>常用工具</strong>与<strong>AWS账户注册</strong>。</font></br></p>
+
+<p><font size =4><strong>常用工具</strong></br>
+很显然，利用AWS从零开始搭建WordPress平台，不可避免需要很多工具。这里先给出常用的工具，会在接下来的搭建过程中用到。</br>
+1. Windows系统下通过SSH连接亚马逊AWS服务器的 <strong>Putty</strong>，可在官网下载相应的版本并安装，这里以64位的windows版本为例，如下图所示
+<img src ="../../img/post2/figure1.PNG" style="width:95%;" >
+2. 远程连接MySQL的工具 <strong>Navicat for MySQL</strong>，可在官网下载试用版，并安装（相应破解版自行检索）</p>
+
+<p><img src ="../../img/post2/figure2.PNG" style="width:95%" ></p>
+
+<p><strong>注册AWS号</strong></br>
+安装好了上述常用工具，下面需要注册AWS账号。亚马逊提供12个月的免费套餐，通过<a href="https://aws.amazon.com/cn/free/">此链接</a>你可以了解此免费套餐相关信息。但此免费套餐并不是绝对的免费，而是给了一定的使用额度。一旦超出了免费额度就会扣费，不过对于个人使用的小站来说，基本不会出现超出额度的情况。</p>
+
+<blockquote>
+<p><strong>一般多关注以下几个方面即可</strong></br>
+1.  Amazon EC2免费套餐规定不管是Linux或者Windows，每个月都只有750个小时的运行时间，而一个月即便算31天也只有744个小时，也就是说一般在 <strong>运行时长</strong> 上面是不会扣钱的。</br>
+2.  唯一导致你可能在Amazon EC2的运行时长上扣钱的应该是你创建了一个以上的实例。如果只是创建了唯一一个 <strong>实例</strong> ，每个月都不用担心运行时长。</br>
+3. 750个小时负载均衡器使用时间，<strong>流量</strong> 是15GB，一般用在你开多个实例的时候出现，如果用超了就要付钱了。</br>
+4. Amazon EC2部分服务是收费的，这些我们在创建实例时就可以看到，要特别小心。创建实例时会有明显的提示，如果选择的服务不符合 <strong>免费政策</strong> ，那么就会在页面左侧提醒你，一定要瞪大眼睛看好。</p>
+</blockquote>
+
+<p>可以通过<a href="https://aws.amazon.com/cn/free/">具体页面</a>，查看流量、硬盘读写、运行时长等相关信息。</br>
+进入账户<a href="https://aws.amazon.com/cn/free/">创建页面</a>，点击右上角的创建免费账户，如下图所示
+<img src ="../../img/post2/figure3.PNG" style="width:95%;" >
+进入账户创建流程后，按照提示一步一步完成就可以了，这里就不再赘述了。</br></p>
+
+<blockquote>
+<p><strong>特别提醒</strong></br>
+1. 电话要填写真实的号码，因为亚马逊会打电话过来让你输入网页上显示的验证码来验证信息，这个电话里说的是英语，不过不用管，等她说完了，你把页面上显示的几位数字在电话上按出来就OK了，然后你的网页就会自动显示验证通过了。</br>
+2. 信用卡信息要填写正确，因为会自动扣掉1美元来验证你的账户信息是否可用。</p>
+</blockquote>
+
+<ul>
+<li>如果在注册账户过程中有问题，可以参考以下链接，主要以亚马逊AWS官网为主</li>
+</ul>
+
+<p><b>参考来源</b></br>
+<a href="https://www.jb51.net/yunying/424273.html">在亚马逊AWS服务器上搭建WordPress站点的基本教程_建站经验_网站运营_脚本之家</a></br>
+<a href="https://huyangjia.com/wordpress-based-on-aws-ec2rds.html">用 AWS EC2+RDS 搭建WordPress （一）基础介绍</a>
+<center><b>未经本作者同意，请勿以任何形式复制本篇文章内容，欢迎转载和参考，并请注明出处，谢谢! </b></center></font></br></p>
+
+<hr />
+
+<p><font size =4>您也可以请我喝一杯咖啡,支持我的创作~</br></br>
+<b>比特币（BTC）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>比特币现金（BCH）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>Ethereum (ETH)</b>: 0x5061c5ddeb4f82e3070a4bd593d2b1cc90d1bfc4</br></p>    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="https://wyshao.github.io/">Lily Chouchou</a></h4>
+                <p></p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(https://wyshao.github.io/myblog/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; Hugo Casper Two &mdash;</small>
+        
+        <h3 class="read-next-card-header-title"><a href="https://wyshao.github.io/myblog/tags/amazon/">#Amazon</a></h3>
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+                      
+        
+          <li><a href="https://wyshao.github.io/myblog/post/guerilla-open-access-manifesto/">Guerilla Open Access Manifesto</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/">无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---云服务器搭建篇</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%872/">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(2)</a></li>            
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+        <a href="https://wyshao.github.io/myblog/tags/amazon/">See all related posts →</a>
+    </footer>
+</article>
+
+
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/paraview.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #ParaView 
+              #数据分析 
+              #可视化  </span>
+              
+              <h2 class="post-card-title">ParaView初识与入门</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza -tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要来介绍这款软件相关使用方法。
+ ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/raspberry.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Wi-Fi 
+              #Raspberry Pi 
+              #SG90 
+              #Python  </span>
+              
+              <h2 class="post-card-title">无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前《从零开始利用AWS来快速搭建WordPresspi平台》的文章所提到一样，百度一下题目中三个关键词，“树莓派”，“SG90”，“Python&rdquo;,”Wi-Fi“你会发现很多相关教程和经验。
+ ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="https://wyshao.github.io/">
+      <img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">从零开始利用AWS来快速搭建WordPress平台---准备篇</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=%e4%bb%8e%e9%9b%b6%e5%bc%80%e5%a7%8b%e5%88%a9%e7%94%a8AWS%e6%9d%a5%e5%bf%ab%e9%80%9f%e6%90%ad%e5%bb%baWordPress%e5%b9%b3%e5%8f%b0---%e5%87%86%e5%a4%87%e7%af%87&amp;url=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E4%25BB%258E%25E9%259B%25B6%25E5%25BC%2580%25E5%25A7%258B%25E5%2588%25A9%25E7%2594%25A8aws%25E6%259D%25A5%25E5%25BF%25AB%25E9%2580%259F%25E6%2590%25AD%25E5%25BB%25BAwordpress%25E5%25B9%25B3%25E5%258F%25B0-%25E5%2587%2586%25E5%25A4%2587%25E7%25AF%2587%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E4%25BB%258E%25E9%259B%25B6%25E5%25BC%2580%25E5%25A7%258B%25E5%2588%25A9%25E7%2594%25A8aws%25E6%259D%25A5%25E5%25BF%25AB%25E9%2580%259F%25E6%2590%25AD%25E5%25BB%25BAwordpress%25E5%25B9%25B3%25E5%258F%25B0-%25E5%2587%2586%25E5%25A4%2587%25E7%25AF%2587%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="https://wyshao.github.io/myblog/">Lily Chouchou</a> © 2018 <br>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="https://wyshao.github.io/myblog/">Latest Posts</a>
+        <a href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://twitter.com/faketryghost" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/Lily" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://wyshao.github.io/myblog/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

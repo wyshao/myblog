@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://wyshao.github.io/myblog/favicon.ico" />
+    <link rel="canonical" href="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/" />
+
+     <meta name="description" content="&lt;p&gt;&lt;font size =4&gt;这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;《从零开始利用AWS来快速搭建WordPresspi平台》&lt;/a&gt;的文章所提到一样，百度一下" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="https://wyshao.github.io/myblog/img/raspberry.jpg"/>
+    
+ 
+    <meta name="twitter:title" content="无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python"/>
+    <meta name="twitter:description" content="&lt;p&gt;&lt;font size =4&gt;这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;《从零开始利用AWS来快速搭建WordPresspi平台》&lt;/a&gt;的文章所提到一样，百度一下"/>
+    <meta name="twitter:url" content="https://wyshao.github.io/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/" />
+    <meta name="twitter:site" content="@faketryghost"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python &middot; Hugo Casper Two" />
+    <meta property="og:url" content="https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/" />
+    <meta property="article:publisher" content="https://www.facebook.com/fakeghost" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="&lt;p&gt;&lt;font size =4&gt;这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;《从零开始利用AWS来快速搭建WordPresspi平台》&lt;/a&gt;的文章所提到一样，百度一下" />
+
+    <meta property="article:published_time" content="2014-06-02T00:00:00Z" />
+    <meta property="article:tag" content="Wi-Fi" /><meta property="article:tag" content="Raspberry Pi" /><meta property="article:tag" content="SG90" /><meta property="article:tag" content="Python" />
+
+    <meta property="og:image" content="https://wyshao.github.io/myblog/img/raspberry.jpg"/>
+
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Hugo Casper Two" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/">主页</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/about/">关于我</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/categories/">类别</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://www.zhihu.com/people/Lily_ChouChou/">更多</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    <a class="social-link social-link-fb" href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg></a>
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/faketryghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2014-06-02">2 June 2014</time>
+                <span class="date-divider">/</span> <a href="https://wyshao.github.io/myblog/tags/wi-fi/">#Wi-Fi</a>&nbsp;<a href="https://wyshao.github.io/myblog/tags/raspberry-pi/">#Raspberry Pi</a>&nbsp;
+        </section>
+        <h1 class="post-full-title">无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(https://wyshao.github.io/myblog/img/raspberry.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        <p><font size =4>这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前<a href="https://github.com/spf13/hugo/releases">《从零开始利用AWS来快速搭建WordPresspi平台》</a>的文章所提到一样，百度一下题目中三个关键词，“树莓派”，“SG90”，“Python&rdquo;,”Wi-Fi“你会发现很多相关教程和经验。</font></p>
+
+<p><font size =4> 但是，很多资料全是复制，粘贴，不免会起到误导作用，而且还浪费大量的时间。</br></p>
+
+<p><strong>前期准备工作</strong></br>
+1. <strong>树莓派3B+</strong>：带供电系统和烧好<a href="https://www.raspberrypi.org/downloads/">树莓派官方Raspbian系统</a>的SD卡</br>
+2. <strong>一根网线</strong>：直连，普通网线即可</br>
+3. <strong>无线路由器</strong>：普通家用即可</br>
+4. <strong>笔记本电脑</strong>：双网卡（市场主流配置）</br>
+5. <strong>Tower Pro SG90舵机级双轴支架</strong>：淘宝有卖，便宜，请自行淘宝网检索</br>
+6. <strong>杜邦线</strong>：连接舵机和树莓派3B+</br>
+7. <strong>Putty软件</strong>：windows系统下,使用Putty来连接树莓派3B+, 可在<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">Putty官网</a>下载相应的版本并安装，这里以64位的windows版本为例</br>
+8. <strong>局域网IP扫描软件Advanced_IP_Scanner_2.5.3646</strong>：备用，<a href="link.zhihu.com/?target=https%3A//link.jianshu.com/%3Ft%3Dhttp%3A//www.advanced-ip-scanner.com/download.php%3Flng%3Dcn">下载地址</a>请自行百度，比较好找的资源</br></p>
+
+<p>本文主要分两部分来完成用Python和树莓派控制SG90舵机</br></p>
+
+<p><strong>第一部分 Wi-Fi+网线+Putty软件直连直连树莓派3B+</strong></br>
+这里采用网线+Putty软件直连树莓派3B+，这样可以节省经费，用最少的工具控制树莓派（当然也可以买HDMI高清屏，获或者连接外置显示器，本文不采取此种方式）</br>
+<strong>操作步骤</strong>：</br>
+1. 使树莓派3B+接好供电线，供电开机。</br>
+2. 将网线一端接到树莓派3B+，另一端接到路由器端口，然后笔记本连上无线Wi-Fi即。</br>
+3. 打开笔记本，找到无线网络连接右键“属性”，在共享选项卡上选中“允许其他网络用户通过此计算机的Internet连接来连接（N）”选项，点击确定。如下图所示：</br>
+<img src ="../../img/post3/figure1.jpg" style="width:35%;" >
+4. 查找树莓派3B+的IP地址，首先，打开window系统下命令提示符窗口（快捷键WIN+R后输入cmd），并输入arp -a查看网络接口信息，如下图所示：</br>
+<img src ="../../img/post3/figure2.jpg" style="width:75%;" >
+这里列出了所有的网络接口信息，但并不太清楚，路由器给树莓派分配哪个IP地址，因此这里采用网段扫描工具Advanced IP Scanner，自动扫描局域网网段内的主机IP地址。此扫描工具可以使用 <strong>免安装功能</strong>，如下图所示:
+<img src ="../../img/post3/figure3.jpg" style="width:55%;" >
+打开软件后，自动扫描可以发现“Raspberry Pi Found&rdquo;的字样，所显示的IP地址就是树莓派的IP地址。</br>
+<img src ="../../img/post3/figure4.jpg" style="width:75%;" >
+5. 在笔记本上，打开Putty远程登陆工具，输入步骤4中的树莓派IP地址，并点击”Open&rdquo;按钮
+<img src ="../../img/post3/figure5.jpg" style="width:55%;" >
+6. 弹出如下界面，输入树莓派的默认用户名：pi，密码：raspberry</br>
+<img src ="../../img/post3/figure6.jpg" style="width:75%;" >
+7. 完成上述6步后，即可对树莓派进行远程控制了</br>
+<img src ="../../img/post3/figure7.jpg" style="width:75%;" >
+<strong>第二部分 Python+树莓派控制SG90舵机</strong></br>
+此部分主要介绍如何使用Python和树莓派来控制SG90舵机</br>
+1. 首先认识一下Tower Pro SG90舵机</br>
+<img src ="../../img/post3/figure8.jpg" style="width:50%;" >
+它有三根接线，红线接5v电源，棕线接GROUND, 橙黄线为数据控制线，该线接到GPIO上，这里使用BCM模式下的21引脚
+SG90 脉冲周期为20ms,脉宽0.5ms-2.5ms对应的角度-90到+90，对应的占空比为2.5%-12.5%。</br>
+2. 接下来，认识一下树莓派3B+的GPIO port,如下图：</br>
+<img src ="../../img/post3/figure9.jpg" style="width:75%;" >
+3. 安装Python库和GPIO库, 依次执行以下命令</br>
+(1) 安装python库</p>
+
+<pre><code>sudo apt-get install python-dev
+</code></pre>
+
+<p>(2) 执行更新</p>
+
+<pre><code>sudo easy_install -U  distribute
+</code></pre>
+
+<p>(3) 安装python-pip</p>
+
+<pre><code>sudo apt-get install python-pip
+</code></pre>
+
+<p>(4) 安装python-pip</p>
+
+<pre><code>sudo pip install rpi.gpio
+</code></pre>
+
+<p>然后基于Python进行编程， 编写SG90舵机的控制程序&rdquo;sg90.py&rdquo;</br>
+(1) 执行 cd ~</br>
+(2) 执行 sudo mkdir SG90</br>
+(3) 执行 cd SG90</br>
+(4) 执行 sudo nano sg90.py</br>
+(5) 复制以下代码，并按快捷键ctl+x ，选择Y保存退出</br>
+<img src ="../../img/post3/figure10.jpg" style="width:85%;" >
+(6) 最后输入指令 sudo python sg90.py，运行控制程序</br></p>
+
+<p><strong>具体程序代码</strong></p>
+
+<pre><code>#!/usr/bin/env python  
+import RPi.GPIO as GPIO
+import time
+import signal
+import atexit
+
+atexit.register(GPIO.cleanup)
+servopin = 21
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(servopin, GPIO.OUT, initial=False)
+p = GPIO.PWM(servopin,50) #50HZ
+p.start(0)
+time.sleep(2)
+
+while(True):
+  for i in range(0,181,10):
+  p.ChangeDutyCycle(2.5 + 10 * i / 180) #设置转动角度
+  time.sleep(0.02)                      #等该20ms周期结束
+  p.ChangeDutyCycle(0)                  #归零信号
+    time.sleep(0.2)
+
+  for i in range(181,0,-10):
+    p.ChangeDutyCycle(2.5 + 10 * i / 180)
+    time.sleep(0.02)
+    p.ChangeDutyCycle(0)
+    time.sleep(0.2)
+</code></pre>
+
+<p>最后，程序执行后，可以看到舵机不停的从０度转到180度，再转回来到０度，效果如下</font></p>
+
+<p><font size =4><b>参考来源</b></br>
+<a href="https://www.jianshu.com/p/505fc3f957aa">无显示器通过网线连接笔记本电脑玩转树莓派</a></br>
+<a href="http://shumeipai.nxez.com/2013/10/15/raspberry-pi-and-a-network-cable-directly-connected-laptop.html">树莓派+一根网线直连笔记本电脑 | 树莓派实验室</a></br>
+<a href="https://blog.csdn.net/crazyquhezheng/article/details/42650469">树莓派控制SG90舵机 - CSDN博客</a></br>
+<a href="https://www.jianshu.com/p/54ec419832a1">Raspberry Pi 3 - GPIO-PWM-Servo-Using SG90</a></br>
+<a href="https://blog.csdn.net/wailaizhu/article/details/54666520">树莓派使用python 控制G90舵机</a></br>
+<center><b>未经本作者同意，请勿以任何形式复制本篇文章内容，欢迎转载和参考，并请注明出处，谢谢! </b></center></font></br></p>
+
+<hr />
+
+<p><font size =4>您也可以请我喝一杯咖啡,支持我的创作~</br></br>
+<b>比特币（BTC）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>比特币现金（BCH）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>Ethereum (ETH)</b>: 0x5061c5ddeb4f82e3070a4bd593d2b1cc90d1bfc4</br></p>    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="https://wyshao.github.io/">Lily Chouchou</a></h4>
+                <p></p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(https://wyshao.github.io/myblog/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; Hugo Casper Two &mdash;</small>
+        
+        <h3 class="read-next-card-header-title"><a href="https://wyshao.github.io/myblog/tags/wi-fi/">#Wi-Fi</a></h3>
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+                      
+        
+          <li><a href="https://wyshao.github.io/myblog/post/guerilla-open-access-manifesto/">Guerilla Open Access Manifesto</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---准备篇</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---云服务器搭建篇</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/">ParaView初识与入门</a></li>            
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+        <a href="https://wyshao.github.io/myblog/tags/wi-fi/">See all related posts →</a>
+    </footer>
+</article>
+
+
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/amazon2.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Amazon 
+              #云服务器 
+              #wordpress  </span>
+              
+              <h2 class="post-card-title">从零开始利用AWS来快速搭建WordPress平台---准备篇</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。
+ ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/writing.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Amazon 
+              #wordpress 
+              #云服务 
+              #development  </span>
+              
+              <h2 class="post-card-title">从零开始利用AWS来快速搭建WordPress平台---云服务器搭建篇</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>《开始利用AWS来快速搭建WordPress平台&mdash;准备篇》上一篇主要介绍了搭建平台 前的常用工具与AWS账号注册。接下来介绍在AWS EC2里创建实例和其他相关设置，从而搭建一个云服务器。 登陆AWS控制台后，会看到如下界面，找到“Launch a virtual machine”这一选项，并单击创建一个AMI（Amazon Machine Image）主机镜像。 ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/img/ghost-icon.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="https://wyshao.github.io/">
+      <img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=%e6%97%a0%e7%ba%bfWi-Fi%e4%b8%8b%e7%8e%a9%e8%bd%ac%e6%a0%91%e8%8e%93%e6%b4%be%2bSG90%e8%88%b5%e6%9c%ba%2bPython&amp;url=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E6%2597%25A0%25E7%25BA%25BFwi-fi%25E4%25B8%258B%25E7%258E%25A9%25E8%25BD%25AC%25E6%25A0%2591%25E8%258E%2593%25E6%25B4%25BE-sg90%25E8%2588%25B5%25E6%259C%25BA-python%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2f%25E6%2597%25A0%25E7%25BA%25BFwi-fi%25E4%25B8%258B%25E7%258E%25A9%25E8%25BD%25AC%25E6%25A0%2591%25E8%258E%2593%25E6%25B4%25BE-sg90%25E8%2588%25B5%25E6%259C%25BA-python%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="https://wyshao.github.io/myblog/">Lily Chouchou</a> © 2018 <br>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="https://wyshao.github.io/myblog/">Latest Posts</a>
+        <a href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://twitter.com/faketryghost" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/Lily" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://wyshao.github.io/myblog/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

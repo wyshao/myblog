@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en-US" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>ParaView初识与入门 &middot; </title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://wyshao.github.io/myblog/favicon.ico" />
+    <link rel="canonical" href="https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/" />
+
+     <meta name="description" content="&lt;p&gt;&lt;font size =4&gt; ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza
+-tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要" /> 
+
+     
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="https://wyshao.github.io/myblog/img/paraview.jpg"/>
+    
+ 
+    <meta name="twitter:title" content="ParaView初识与入门"/>
+    <meta name="twitter:description" content="&lt;p&gt;&lt;font size =4&gt; ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza
+-tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要"/>
+    <meta name="twitter:url" content="https://wyshao.github.io/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/" />
+    <meta name="twitter:site" content="@faketryghost"/>
+
+    <meta property="og:site_name" content="" />
+    <meta property="og:title" content="ParaView初识与入门 &middot; Hugo Casper Two" />
+    <meta property="og:url" content="https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/" />
+    <meta property="article:publisher" content="https://www.facebook.com/fakeghost" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="&lt;p&gt;&lt;font size =4&gt; ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza
+-tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要" />
+
+    <meta property="article:published_time" content="2014-09-26T00:00:00Z" />
+    <meta property="article:tag" content="ParaView" /><meta property="article:tag" content="数据分析" /><meta property="article:tag" content="可视化" />
+
+    <meta property="og:image" content="https://wyshao.github.io/myblog/img/paraview.jpg"/>
+
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/built/screen.css" /> 
+    <link rel="stylesheet" type="text/css" href="https://wyshao.github.io/myblog/css/casper-two.css" /> 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+    
+
+     
+
+</head>
+
+
+<body class="post-template">
+  <div class="site-wrapper"> 
+
+<header class="site-header outer">
+  <div class="inner">
+    <nav class="site-nav">
+      <div class="site-nav-left">
+        <a class="site-nav-logo" href="#"><img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Hugo Casper Two" /></a>
+
+        <ul class="nav" role="menu">
+        
+        
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/">主页</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/about/">关于我</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://wyshao.github.io/myblog/categories/">类别</a>
+            </li>
+        
+            <li class="" role="menuitem">
+              <a href="https://www.zhihu.com/people/Lily_ChouChou/">更多</a>
+            </li>
+        
+      </ul></div>
+
+      <div class="site-nav-right">
+        <div class="social-links">
+                    <a class="social-link social-link-fb" href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg></a>
+
+                    <a class="social-link social-link-tw" href="https://twitter.com/faketryghost" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg></a>
+
+                    <a class="social-link" href="https://github.com/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+
+                    <a class="social-link" href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 512 512"><path d="M150.65,100.682c0,27.992-22.508,50.683-50.273,50.683c-27.765,0-50.273-22.691-50.273-50.683 C50.104,72.691,72.612,50,100.377,50C128.143,50,150.65,72.691,150.65,100.682z M143.294,187.333H58.277V462h85.017V187.333z M279.195,187.333h-81.541V462h81.541c0,0,0-101.877,0-144.181c0-38.624,17.779-61.615,51.807-61.615 c31.268,0,46.289,22.071,46.289,61.615c0,39.545,0,144.181,0,144.181h84.605c0,0,0-100.344,0-173.915 s-41.689-109.131-99.934-109.131s-82.768,45.369-82.768,45.369V187.333z" /></svg></a>
+
+                    
+        </div>  
+            
+      </div>
+
+    </nav>  
+
+  </div>
+</header>
+
+<main id="site-main" class="site-main outer" role="main">
+  <div class="inner">
+    
+      <article class="post-full post"> 
+    <header class="post-full-header">
+        <section class="post-full-meta">
+            <time class="post-full-meta-date" datetime="2014-09-26">26 September 2014</time>
+                <span class="date-divider">/</span> <a href="https://wyshao.github.io/myblog/tags/paraview/">#ParaView</a>&nbsp;<a href="https://wyshao.github.io/myblog/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">#数据分析</a>&nbsp;
+        </section>
+        <h1 class="post-full-title">ParaView初识与入门</h1>
+    </header>
+    
+    <figure class="post-full-image" style="background-image: url(https://wyshao.github.io/myblog/img/paraview.jpg)">
+    </figure>
+
+    <section class="post-full-content">
+        <div class="kg-card-markdown">
+        <p><font size =4> ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza
+-tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要来介绍这款软件相关使用方法。</font></p>
+
+<p><font size =4><b> 软件版本选择及其安装 </b></font></br>
+<font size =4> 首先需要打开<a href="https://www.paraview.org/download/">ParaView</a>官方页面，进行相应版本的下载，以免装版<code>“ParaView-5.5.0-Qt5-Windows-64bit.zip”/</code>为例。</font>
+<img src ="../../img/postimg/figure1.png" style="width:95%;" >
+<font size =4>解压文件后，会出现下列文件夹（图中高亮部分）。</font>
+<img src ="../../img/postimg/figure2.png" style="width:95%;" >
+<font size =4>然后打开bin文件夹，找到paraview可执行文件（图中高亮部分）。</font>
+<img src ="../../img/postimg/figure3.png" style="width:95%;" >
+<font size =4>打开软件后，可以通过点击“Getting Started Guide”打开官方说明手册（只有英文说明）。</font>
+<img src ="../../img/postimg/figure4.png" style="width:95%;" ></br>
+<font size =4><b> 相关基础操作说明 </b></font></br>
+<font size =4>首先说明图中相关部分</font>
+<img src ="../../img/postimg/figure5.png" style="width:95%;" ></br>
+1. <font size =4>重置Paraview </font> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAfCAIAAAHny7H4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAASZSURBVDhPxZX5U1pXFMf7b3b6S1qzVLPbqoisIsaUTcEFF5RF8BkBBVywJiBVwT2p4zQmRkHApGpBTKapJmTI93Ivi0RrMplOP8PcOds9j3ffOed+kyqCKD7/aDj8Ynk5yDy9veqq6u+J8vp1an9/D8Ine0BV9SWiZDIZr9dJTcSzsPBbv7WdKRSHwzQ359PpZFQlDo9ngCoOpxmroVeNlTgaG38i5hwjLgvWQqoSLnIkk8mDg31+3RWXmz2POKT1t6YDXon0pkLJH3zQXXA0t0iwtrU3ZC0pt5vDWnhGOPyMCtU1P2AlDqHox6yFsL29ubGxDoE4huxGoagcgsGgqZfdJv7iVCWc6ziPUxsk0huPH4csllaXywbVOWJ2e2zeyWHqpbANRpNu88Uf8XiUqnhVfIBAYBKySFSha62ndsA2vHt3EotFqIyjxEMa5HepCuoE12p45CwA2/DyZXRpeY7KwOm0hMNbTMHnvfczflRmGzaerb95c2To1VA1TyKRUKr4vNrLTC956c3Npw3yyng8kk6/342HbbaOFq2U+XKc2vA5fNmGr4teXgl2dSsg3K38DmdiMulisR3qAoXotbUVg0EdCj5C2UKtE1z1jA7U8q9QL4VFL6+EDg7+FArLDw8PceoS6a3p6Qlp/c0O/T1+3VUaA1j01NSISHydyqgCWvbomN3dmNmi6zGQlgQkenT0wfr6KtVBPpqi0QibW8RUJtF4llxeSXUgb6y0WttRPFSNxXdoVwMWzeOVUR10djYlE/sTXgfT0YYeUtWARCuVfH3nfaoDvCUqjCnZM7UN6KlMotGPx8f/oDGpqYQaXplAyPqXRAMcSH9/WyLxF1XzdHUpXO5+lCpVWTTAu8/P+/uMWjooFxZm8Gkmfx3mODZXQCEatLbJpx660un00VESO8WSG6hk5styKvpC/svoL+V/yo7KcrmsmLZKVZ3ZTObT6uo87PjsInGF22PlBrtR0BgmuNYiO9tn/qEzss/OPhRLrq+tLeGn1ggh2+3GxcWZvb1XNADta+hTo5i5wS6TWYdRNTMzRV0lnMqO6SsUVcTi4enAOK674q53ezh0UotWAiES2bp951u8EBpGJrvT1i632jpwleWHd55C9mg0gtQnJ8cYKPQQiqFtS2c+M+V48mRRICwfHrHwasuQhFmzFLJrdfVbWxsDXGcg4GWmIrLZ5e0d8k+zA5zM/V9qzJZWlVrATFkK2fHkTCaD7sHwYqYc/ukJtUa0sjK79vuCVivx+caYo4iq6ksYFFiZnqU4++UPH9Jo7/zXy4P7TSC4hrnhdJpwoUWjYebIgdbGqHC5ragfZspSyD5k7/P5R4PBR0aTlpk+GwzaDn1Ta5uM43qYKUshO8DdtroaDIX8KrUQFyOz/ivJZEKhqO3sVvQYVOgMZs1xKjsYn3BomkVv3/6N8YdnnDcyAVwKJV+tEYxPDOFKGhsbYo4iSrNTJieH0ZBLSzOYyaGQT69vQtPiZPHDuePxdnsfRiLHdaEKim+AEs7Onuf586cOhxl1hiy4XLDi4yuUtUN2I1ws6HwuyP5VpFIfAS5ngsOapBsYAAAAAElFTkSuQmCC" alt="图标1" /><font size =4>单击上面图标后，会弹出如下界面，即可重置paraview到初始状态</font>
+<img src ="../../img/postimg/figure6.png" style="width:40%;" ></br>
+<font size =4>撤消（undo）和恢复(redo)操作图标</font><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAeCAIAAAFnP7GwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAO9SURBVEhL7dfLSiwxEAbg8/4vIeIFFRHxgoqIeEFFVAZFXKiIIq5c+Ajnaytmcrp7xplR5mzmXzS5VP78qSRV6T8fPZA6pqenozA7O/v+/q5QdRwdHT0/P+e+Tqfj+x1VE1UHUtRRX1paikLVsbOzE5Xl5WWT3d/fKw8/Ry+kAVdXVwcHBzMzMxaTdSwuLq6uri4sLNzd3b29vUVjGkBKFE5PT3OfgmqUs8GokgbEqNZWaa2xlwFlns+rh8p6b29vbW1tc3NzamqKf6IDtra2tFxcXOzv77PRUllzFj/Ozc0p53MB0YKeK1dWVpQr6+3t7arzE6V1WATCZtRVDoLhrIfFuNgfHh5snVPHeRsbGzbCbsWBThb/goEthN3d3fPzc19jMeBJFiV7bPXJyYnddi2i0YDWCVBTkC8A+9vb26enp5eXFzzRCF12kl1zX1z2O98n1XJAQIsJosySPRFO4PX1tUVEO/T0O13r6+tYssAakOpl08sAxrWrv44JdQ1d6hwLxXAnL5DjeRO6hDVpyTeblQG1S+2EOkxuVxzz6l5+ogx0GRrjZsLx8bFzHRebfbIoqZ15cDN9aXFyqQ72ZFFAJEdKLxtX5ubm5vHx0e0/OztLFiW1Vn2SPN58J2lBfXl5GdWAKl5dUWVsoVI11e59NEKiFmKsCy8JAkV2gnbUNY+ros5RiTFZhGOH3J6oMZpZtpqfnycny1RAXW4OqJq+tDHEBBbN6ZHUIFGXdCW4Mi+8hMbIejXENFHu+roGq44YlOoNRAir+apET+qfY0I9Tkx0jxfD6RaAXMJADkYj4ydsLbrFYeEsP2MUVAUlXyFdiKyyxBfEMe21ENkHLIMtkkpA8PX+90jE35w6J5ESLbqtXmAWgAVK8BOGVH4T1+OHLEku0D9VZ7ChOIktYC4pyRNX4PeLYhkxdfzftDK36BaUZTX/kobJUhhDd/xWYeEAbouMntO0ON5/r/UyC6G8aCwGPNgimXBW6JbNedo7+/X1VY5szR913ViwkwueESGaP/jJ+OZ5ODw8DOnfulyvY0C09RuVWr+AGb/NJJR0ydxTASwAefOo1HUHu90BcrnZTPGccLI5lWPy+QNezLrNl1rboDcOiW+5M9hi35x4k9rkTqdDvb8bQ8CQpkfqumPRcfnQ+X+xiaXQGvw+mRLyg6QP2HC2S5J/0powlxnNa3YrZMxrzaPScr4HhLMYz9DaDvRHeDe2DkNqHR5D6zaZ1fMcr7RGqAER1xEPthEWMLq//y8museJj4+/YkEHei7FYVIAAAAASUVORK5CYII=" alt="图标2" />
+2. <font size =4>单击打开图标 </font> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAZCAIAAAGsn1ttAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANGSURBVDhPrZX9T1JhFMf7M9ta+TJbuTa1N7lbpmOhFqbEMC0lSYOoVMhMsbS8TlOxF410OUFEvYCiKJbx6+l7eR6u3Cu3nPrZHeO55znPOfe8PWdSauS18XZhMpkQhGK+tliqaa1LFIf4OhfVWl7QqoOIsotwK0V7+EJBewbO5/8UmbG6hLlAqVlpaYy95LK5uc/SlKmm5gpbMrRnKmgFih4X0Ep7eflZuMy8Blzg623w+bppZ4b2FtgbLpBCUxR5QutuivWxN1wg9lTaraUsTgytcQVdwT/Io4NQbG7G8Ws2G+B/MLiAJZdlUOnYbVfFvjqPp5N9Lb7OZjMKhkJPd2ueFDDk2KRmXe2VFPNQvJ8231HiI22PC4YCviODSsfrdQqGIgpZMs8DCj+UZprMpotcnEX7PbmB0yNPDP7LaetEImHWGxq0OkjF9LRcuig5SVpBxA2GIiZSONBBEoPj91BY/kGT3X6fpQigDSDimzIc6CBiJL0SKs+n0/vYGgjMuFwtyJjNestmreKbMhzoLC7OU2IEicdu+XfSSbtfaS9Av35q3FN9Tzo+6XLUoplR9LQxSIlh2hLT0VEEg+/IoNIJ/vhgrCqglTZ5Jqw5SXpJMa+5tpSLs6h0fG+daG5eO8s2Cj8SvTUoKC7OotKRazRkQfcJN885HFaNSwoqHYROb18uKp0jchydY3BSM0NDHk1h5eWYZpAypAUjBqWJ4QRjXKCDrhkktL7+Bs6S67rhstlUglnldrehBUVxgPWIAsof+7lmPvKbgXeutuu442jtWXK+3W6rwOnoD36qGjQk5iy+CW6x/j5MfjMIt62xDFNUqLyg8d3vFzFRPe5Gcagj+N2X3grQ/jL9iVB63Xz3mt5k1A2a3BHbn9JR+VA5bo1lvu46/3BzcslLW6O0NUbbE5Scoh0/7X6h3W9obYSUKx9C1wwyAWfp96Kx5lJwognRo3UXSS9I6qZoL8VeU/wNxQdow0eb7/0jqlvmMLpm4Jqv/6mrq8nTUSHfJyErLTdTuIVWHlOknSIdtNqZsf08ONl8eMZq0DWDKOPaMt8pzt5c/ME8Yjc7xgtGOQrsRDcVxg5SAjO5xx1lFuVF18xpkkr9BQn6rmc4sfTJAAAAAElFTkSuQmCC" alt="图标3" /><font size =4>
+<font size =4>显示如下界面，这里可以选择打开Examples/can.ex2文件</font>
+<img src ="../../img/postimg/figure7.png" style="width:80%;" ></br>
+<font size =4>将在Paraview主界面的左上侧Pipeline Browser显示</font>
+<img src ="../../img/postimg/figure8.png" style="width:80%;" ></br>
+3. <font size =4>单击左下角“Properties panel”中Variables旁边的选框，选中全部变量（高亮部分）</font>
+<img src ="../../img/postimg/figure9.png" style="width:80%;" ></br>
+4. <font size =4>单击图标<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAeCAIAAAFDJj5wAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOsSURBVEhL5ZddTxpBFIb9bU160bteGtOmSWN6YVpbYyJqE9qqDQV31aKiKCCKfGg0UEJrpVggSMQPqggo1lWstqnGKv6AGntgJsO6u7DAqqTyZMQz5+zh3XeWXYaqs7ykyz8yvPE/RAEbXF5a8jscZpRiky5XNW/mHGmF3FTBIeh9ejRyFBCy5VDID69VGTKlNLica6TL6T9eoZCRbUZaTqfl8PDX0/G77Zo6mLJPgw+32eNxnZwcB4M+NAVQv+C74OaSkdxM1qCogZuxiQzjk5rJqBpPcsNt3tvbY5iNo9QBrX6JMmw4ayag7PF8OD39gyesBghQnM3wm73ej4nEOp5kIG0oRgGQbYaohIGbS0ZSsxSwMFjAK3HNoLVKK+J/QsJOp21u7lMsti53Ppj+qVYbXuNCbtgXVhBxYbt9zGh8b7Vq9fquNkU9ZHw+NyoRiAwJUMx5ZSMuHA4Ho9Hl3d2t8/O/nIey4FuTKQIl+YgLI0ZGxG/rouAK3zyVKQzrfpPjkjC+9NdPEcKNr6o1yzLv9vTmZhynJCAuHImEh4aoZDLZTj0b3GnyHk3EYhFcy02eOxghItzR0bC8HNzf302lTiiNrHWqWq58sr6+issSEBFWqVpsNq1W+87lsplM/eAbkpHIN1QlzyZ+QCB5NCWICKvVb4JBz+Sk7uBgd34+3yOaZFBA4GcQIsJms3Z7ewO2zgsLX+NxbJRAVBEkZgcoRgEbEWGgs7MFviEuLi5UKhlO8cijIagKiAsDcP9sbMTw5IrgCt/kyAqXhcoTLhcVbJjzkb9Ng305uYbx06VgwuHFUUuffpzWmWjdGK0bpXRGSjfSxTDf8RFl5eoNI/wBt6z9kWFHPvN7ZDXlHTQo4vEorpUVSYZhCzI8TLW1PR8YgE3JRCjkm5oyKpWyVnltnfmObO1eZ6KW/vzCwigpXVM0uobbWOT6msxPaV0ISYYBhaLJYhkwGLq1WuXsrMPnn5n+ojeZ+mBHVt99v2dQDosSmJ9raKxZWwvjHhZw6iWcfTkNU1RrIOB2u+2w+YTf63CdGxpqNJq3kLHbL/145oPOm332JM4TAOwYEDwmF1INDw/TKyvBSGQxFPJ6va6dna3e3rbm5seBwKzDUZDhYgOAHSMgw08KItWw02nT6+n9/STDbEaj4ePjI9j2ArDlFjXMR9AJjvJS4GGAVMMIhtm2WnU03bqyEoCbeWysP5EoqPHmuRrD/xHihm/lwA4zZA1XCBVm+OzsH00nLZVqLgBuAAAAAElFTkSuQmCC" alt="图标4" /></font>
+<font size =4>把变量数据加载，在主窗口实现可视化，如下图所示 </font>
+<img src ="../../img/postimg/figure10.png" style="width:80%;" ></br>
+5.  <font size =4>在主窗口，按住鼠标左键，并移动，可以对可视化的模型进行旋转；</font>
+<img src ="../../img/postimg/figure11.png" style="width:80%;" ></br>
+6.  <font size =4>按住鼠标右键，移动可以对模型进行缩放（鼠标中轮也可以实现相应功能）。</font>
+<img src ="../../img/postimg/figure12.png" style="width:80%;" ></br>
+<font size =4>而单击高亮的部分，下图所示，也可以把模型置中</font>
+<img src="data:image/png;base64,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" alt="图标5" /></font>
+<font size =4>这里也可以通过选择下图中按钮，实现不同视角下模型显示，同样可以进行缩放，旋转，坐标轴显示等操作。</font>
+<img src ="../../img/postimg/figure13.png" style="width:50%;" ></br>
+7.  <font size =4>单击“play”按钮</font>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMoAAAAkCAIAAAEwTgKbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAA76SURBVGhD7ZvnU9vctof1t94z99wzOW9JwCEECMXGvcq2bExx77Ix1UAKJRhjWgIkYIoNxhBCT+Z+fL/cu6S9Ize5UeacM+Nn1sDWllja/mnt5bUlQfzfo0L8fDxmZmZy7nqVz0NpPWr7dzSuNTnbJPxf4RjmMHtc0v++Zyk2C216X3d9fU2NdUB7JEslEh+hUexubXUJtaWKl5w7WyzP3bsetpNxAT+RO+eqbPTUBI0Cdw+HcYc1fAwec2jYV+hQnzlOh1LMRRgfCyhszaS/DdrHR4Q2gFUzjnXQ+yRzNHMRSNuSGLWBb99O4WfOF/wcPWOEBBTWnK/b25wvmxX72kvucL6GjwyRjBEa2Nej8Ji+HhGeIAvsaEWKP1FbpWNEy6dT8Q97XKp1v8LbP38eHaX2kkhSZAzWhV59pE1s/B1tcphMEtQYWhAZIu2oDRjDHQa6nQy0GcdwJ8/I4KKKVS803hb/Fw0KE+Dq6tK7pfJ/1UC8wCxDl5mFgIsNs9e/QzicuZHBvIMLDzMZ/gTad3e3qB+mNLgVk88hDtBMRGx9XtfqOqEBQ0Q9D5+YaDSc3Z9oNIRbLI88xx8RAoaGB/nvxH/CsCbGaO+WGrWvr68mJ4OojYhOhI+P057PSrzNIqGe54UXjjA45vLyYn1tGW0i+iwy3GIPwC0IdqoX5iMYzLN3b8dRZ+GwRulAUguNLskzmDgT43hYP37cDcwKYXJBLoefqJOFcK0R9AGx+LFgWHDMxcV3+KkLtqIegKLEvi8apZqZy/lODJRwZnoEGnKDAPUAPMNaWpqlD0j4S25YelM3bILxDgvShGM5980AwDFoWFALeHx9qBOGBT3g+eBgN99JKrUPBo27u7vBeRHq5FcLUDkF3LCAq8vLYFLHOyyfl5OqYFiQ525vb1APAMMSqnGmzXfi9fTD6KGaAHOs4Av9wJAvHtBj8cBhPRVMOoWRoSTWoDIgFBMV6Er+9ddf09PTrIgN+KmiFyT7o/QhWDZ7jLvygDSAW2WAehjSEfIA2QX3FgLVz83NNd6oyNER4wdqvR8/fsDAcG8Zzs6yuJUH5wFvl2d5eR4q0G9nTD2fTxW9IMdChQhpFtZeuAs6x2nzZGfkhMpPuflksxmZXkDv6WCNADJBaoUUmldFcjA5DypKSMvuDcJsIa6vmZ5CywGlJfiBShOuE6zzfFtqAyUqpzUk8OFjo8r2Mr40h7t+/oQ6FDzkl6Ic8DUIi5/+98KBD4xBMRvc09liErfXjI9gqVUvsappZMQDXgJJpgaGs8K3fpFe5+dnMp0guKeFvcig3q5RL6YIZ833hdCQxM1NNb3Y4hyZ74uaNPTkf9sBoBdTrjN7NcF9nWJIsPl5tYJeeqpn8qo/OomL5avry9vbW6muWWF6iXoQ9cUXTAStpsuzqYSzluqF2N7a0LhfwVhhoHXpFdwjpBSROeaUQpajVK/gPikzNWUyR/iIPJBegV2tbUnisuMYqaAXfDQQy/K2W0L9qae6SaqLNHYbIm1cbYOootfkOA0lJXxgofwP3MUCF9Nq14xPBPA2H6uJ2Ovuvx0fpWCd6FyRqZ0teEcORhHQq1dNZDKcQEWWY+B9D/jR0a2gV6fsH7Dexzv4oEziIG3FG7/of9cNHkg6V6XmA6lNbmqW6l8szM3Mz04jm/0QxbtZqujVoIgCvRpUhdELl2INaqOhV30w8xF+oXhrUJkCvU5OTtjOBmVpxFd9VImvVGofqpJ06gBv5/H9+zfcKsOPH3ewyoN1HLNkSx9eXV3iHYWcntYU1N/Oz5AfKL5gIYF7y1O6wDz9NZLLqwvcVZ5e5Z/cPct8qsSX1v8K6lXHsqzo075/OyHUPsMbfMDxEnXzcmLebJV6N1XBpG4qGsb7CjFaREY9jKGcYYyGXh+79PEHB9w+E6nrhpU83seHxPjn5qc1vMGi1rX7ttWwVqH9dtyVh8r+Et3dBdPT7ZaZbjhSrmwpWp9WiS8y1AoLCNeGgrtc59/O5NoWWEXq6dL1DWZsxG+e6qQPyPjynMUh9+9owinD9NQw3p2DUcQ0SITThNxKJOKcRvmGMRphfUOC7n56yO01hY8NGm8LelLLiyMhA3UoUy/e/vlTZ+iCJTQs40IBJ+7Kw7oohmUMLLPQetsel8L4pcam3d1tfARLlfgq0isy7B6YE8GiDDoNfHplT47fSP4nfGSAxSNcnxr18u8wy+xAkpBIiYsLTilkmCK94JNDrEGPVN4CMxQflIcjIYVB0oek3Nq0wj7rrqoX6ct9Ipm+2eOy4I08ao0vyDIyrQDOh25O8OoVjYb6prtAJhALDqhLL3RnIrhP6ILE4iInFjM2RKlecAqQLLiv0/lbV1YYRfJBejG2o4GJbLZIjWZRBb0cKzKYibDqRpvZbGZqeph0tjuczGNojlrjC1KswSz0bqkr6LWysqhxt0AY31uv0CEhMRNbW5xYzNgQ5fQKHZJS8/OvXzfxcb/g9EK3KAL0kJ5ibmmV02vz89r21sZ0NLK1tY56xsb8kYyxf1CBNhG1xheaj58/rYAicElhoLzzEZBJW9DD5vr02iWsHwnrACcTZxgevXY09iWJfciAjygE9GIm7AEp0bw4O2XutVaejxBQ7b3/PXpqksgEzM0cqqun9/fh44p6lVKa72+ur1XqDuiskO/XVpfUbkE4ra9Rr0iGeCMnUoecRvmGKdIrkqWE5LO95Fe8uwSYX65VudPBvGWDqKxXa89/RU4okHj0jHl2xln/UMFj1irxpfYInCsy68feonri03oCrgbe4AP01Zt6QC/TkNi5KoOIm/x16zIPRhE9RUTCnDqlhtHrhe4NhWtd4fX3uzyU12OpXE+IVH8cHiTxBotS/dq1LmeKG58NdxVitxmZmeuxcje/wLa3N/Bulirx9cTk61Jk/xrgMqfTPMU5R5X4alDEvza+/vNo6FUfjF7/26DBk4G/i2bYN05Qu0GDh4Miiie8/mJB7QYN7kfZ8AKmWfBGgwb108heDepgZ3fL7e6r5UET4kHZK5H4qKM6zTaxycoYNSiy9CuK3lcrZS/5dWBAvfDxQW+2rK7E+vtVm5urZ6fZQHDQNNRrsoKJYTCUpTcW+4CPq4HT0xOvr38k4i33pK9egrTNOCAyIVlsYqNF+PbdyPX11cRk0OO2ZE943mitHX9gMEQ7stkM3i6Dy21ixsBeF9DE0NczO1vwQlY5Eon5sbHAVHR4aqrYotGwdZCUW5rdGwpFfzPov7tT8BColAdlr4nRIBl6HU7pAzva4J4OztqrfM7dgM3n5uZmL7ljMIh6jb8FdrXmia5yr7xWAJysr8VJfbes/3nogNR4WuLLc5njtMUhd63L0cOqcNqgD7Tx3cItAj4ytuMjwmwlAjuE5S3RoyBCISKbze2tZjwYjWLHsoRm/8eD3iONYx1+euji4rvbZ2LumyekQvVvbrf5mHlfudKdTl4oSuzdUtlikg7x30dGvJnMEa8TnaHLHpfQ7MMN0IQa7+C9mVyKwSR0rMqGM8Yw+5+GkQxVZKFDvW9bDW6h7dpQvO75WzBY/Doix4Oy18QoTYZa4XxwskBSCycrDa/U4Z5O0w3B7lyV0fukf4d53dVAt9UVXtvbn4x6MTgBZcFJYIc5ncLWnAuvNebZACNlykD66w4v0yDz5ixEWCBJ0PuEZYYQqwmPM/9l43LGA4QXc2nhw37VBJO6XHh5Tehla5gJEHyDcyKJ9oXLbr6+riNrQng5ElL0Qi5ET/+7HrH6xeiw//v3c3wEC4SXbUnMPAti3y+mxmoOL0poXRSPnFAab4tYLLDadYNWNbIhm0atfiOzNEVOjNrAqx7JH4n4QtF5i3hg9uIPr7u727XVuNEkUtkFkFdCh4zQ6Ekk+rQ1htdyfMHUJ1EMsVHFOuHsKcILPftkjH3CTh8SAx8IOUXYbUQ6lTu+0HioGl65T7GrBfUGPgjllMDlNPO+3V0EF17Ig++LGgWr5V233NgcCjpOWCc6fef9wysmHjk1gYxT0TD31BoB1UhfnwKuSyq1H1+aiy/OLX58nyx8TyKfR85eGqr9w/uJLtE/YWpCgmW+sH5FFWe1hFcs9r6r+7ehBRFMFHACIhY5edrwyrPgHjFySmg8hEJOHB7k/uqX8VB7eHEW3NeNnFIKa7NW3Xl0dIgd8VEUXsiQPtAJ2soHmzWaTmNf7/3Cy2rTKY2vyKEOJdk6Pzd9e3sLkVRUlULn6Kivb6I7ejfgWJEVPZbN54my1x0UFk4n1aN6NrTQO3xkgOLsHtnrYH8XauFuxT8dK1IoBcAJ8oBO96TZC6IqnCb0YUIkJ6JR4vw8d3yh8VB7eEEbxCHDr8WKppnpETgGuyhPafYCJ5C9dMFWsbwptvjhgv22uveXI8f+3o7ZJFMOvlQYX0LJi3tZ4PqOjfkN4Q4ozgbnRUVvSeTzyNmrtPaCdZnfNyTTC8xTXaACyA3H11t7pVMHwYBNSjZBsIITOBektKeovegDJrwgV2kNxNtp7v+pKxgPVcMLggP6SbpNY+iYjkZq/AdGBBdeoAOU2Bpfi0bfsRybL0ow9w6vlcTHvgGZyv7S81kJBQnoDNoyK5J4scEB4P+e4VVj9tIPvx4+NgSTzNe/Z1NVbuWICNMuseLF4AchNfJmYqKO8OI4Pz8L+mwSVZMtJlY5BSi8+h1yzycFfFQIO1jO6IPtsK7Gf1CWXIhAeMHK0blKKO2ERkOsr+Z21WA8QHg5V2ThNPOPfDCXqIk3fnqQCS+feXBWaAi3K1WvF+bf4qPrxGyWwqU1hNrF4uZPGyu4twQIL4hCqHpZTYymyc4aw+v27nYpNqdUtkE6ZKZr2mAIt6mGWkhXe6npPR3yPoHNrsN/XMKDslc8PtclfKbQvUIGoaPTd8MXM95dhrOz7Ph4oPSNybo4PEiORDy7u1vgzekyytUtaAxKXatc9aqG+165EDk7I8bHiUSilnViqfHg8w9IlM0wEmZI2lcyhWBqKgwpam4uOjc7dVnDN2AFYFouLr6/vKzyCjyUUFKlgNNEIm+am5vC+2oD5kMsNitTv+yR/L66FsO9dfKg7NWgQWUelL0aNKhMpfBq0OCB4PCCXw0aPAkzM/8Pii5ftSL+AswAAAAASUVORK5CYII=" alt="图标6" /></font>
+<font size =4>即可以动态显示压碎的过程</font>
+<img src ="../../img/postimg/figure14.gif" style="width:80%;">
+8. <font size =4>给变量数据添加其他颜色映射，单击图中高亮部分的下拉选框并选择“EQPS”，其结果如下图所示。</font>
+<img src ="../../img/postimg/figure15.png" style="width:80%;" >
+9. <font size =4>此后，为了添加矢量符号，单击图中的Glyph 按钮即可；</font>
+<img src ="../../img/postimg/figure16.png" style="width:40%;" >
+<font size =4>然后在属性“Properties”面板，找到“Active Attributes”选项，并选择“VEL”模式；同时，找到“Scaling”选项，选择“vector”模式</font>
+<img src ="../../img/postimg/figure17.png" style="width:40%;" >
+10. <font size =4>之后单击属性面板（Properties）右下角的重置按钮（图中高亮部分）</font>
+<img src ="../../img/postimg/figure18.png" style="width:40%;" >
+11. <font size =4>单击Apply按钮后，即可可视化模型中显示矢量符号</font>
+<img src ="../../img/postimg/figure19.png" style="width:80%;" ></p>
+
+<p><font size =4><b>参考来源</b></br>
+<a href="https://www.paraview.org/paraview-downloads/download.php?submit=Download&amp;version=v5.3&amp;type=data&amp;os=all&amp;downloadFile=ParaViewGuide-5.3.0.pdf">ParaView 指南</a></br>
+<a href="https://www.paraview.org/Wiki/SNL_ParaView_4_Tutorials">ParaView 官方教程（英语）</a></br>
+<center><b>未经本作者同意，请勿以任何形式复制本篇文章内容，欢迎转载和参考，并请注明出处，谢谢! </b></center></font></br></p>
+
+<hr />
+
+<p><font size =4>您也可以请我喝一杯咖啡,支持我的创作~</br></br>
+<b>比特币（BTC）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>比特币现金（BCH）</b>:1FLHDgSp76u3CoasTF7fDyYBooGv8Frh5f</br>
+<b>Ethereum (ETH)</b>: 0x5061c5ddeb4f82e3070a4bd593d2b1cc90d1bfc4</br></p>    
+        </div>
+    </section>
+
+    <footer class="post-full-footer">
+      <section class="author-card">
+        <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+        <section class="author-card-content">
+            <h4 class="author-card-name"><a href="https://wyshao.github.io/">Lily Chouchou</a></h4>
+                <p></p>
+        </section>
+      </section>
+    </footer>
+</article>
+    
+    
+    
+
+  </div>
+</main>
+
+
+<aside class="read-next outer">
+  <div class="inner">
+    <div class="read-next-feed">      
+      
+<article class="read-next-card" 
+            style="background-image: url(https://wyshao.github.io/myblog/img/blog-cover.jpg);" >
+    <header class="read-next-card-header">
+        <small class="read-next-card-header-sitetitle">&mdash; Hugo Casper Two &mdash;</small>
+        
+        <h3 class="read-next-card-header-title"><a href="https://wyshao.github.io/myblog/tags/paraview/">#ParaView</a></h3>
+    </header>
+    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+    </div>
+
+    <div class="read-next-card-content">
+      
+        <ul>
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%871/">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(1)</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%872/">从零开始利用AWS来快速搭建WordPress平台---云服务器环境配置篇(2)</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---云服务器搭建篇</a></li>            
+        
+          <li><a href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">从零开始利用AWS来快速搭建WordPress平台---准备篇</a></li>            
+        </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      
+        <a href="https://wyshao.github.io/myblog/tags/paraview/">See all related posts →</a>
+    </footer>
+</article>
+
+
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/guerilla-open-access-manifesto/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/welcome.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/guerilla-open-access-manifesto/">
+          <header class="post-card-header">
+              
+              <h2 class="post-card-title">Guerilla Open Access Manifesto</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>Information is power. But like all power, there are those who want to keep it for themselves. The world’s entire scientific and cultural heritage, published over centuries in books and journals, is increasingly being digitized and locked up by a handful of private corporations.  ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+      
+      <article class="post-card post"> 
+    
+    <a class="post-card-image-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">
+      <div class="post-card-image" style="background-image: url(https://wyshao.github.io/myblog/img/amazon2.jpg)"></div>
+    </a>
+    
+
+    <div class="post-card-content">
+      <a class="post-card-content-link" href="https://wyshao.github.io/myblog/post/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%A9%E7%94%A8aws%E6%9D%A5%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAwordpress%E5%B9%B3%E5%8F%B0-%E5%87%86%E5%A4%87%E7%AF%87/">
+          <header class="post-card-header">
+              <span class="post-card-tags">
+              #Amazon 
+              #云服务器 
+              #wordpress  </span>
+              
+              <h2 class="post-card-title">从零开始利用AWS来快速搭建WordPress平台---准备篇</h2>
+          </header>
+          <section class="post-card-excerpt">
+              
+                <p>AWS全称Amazon Web Service，它是亚马逊提供的一项云服务，同时也是现今最强大的云平台之一。下面主要来介绍如何手动配置，从零开始利用AWS来快速搭建WordPress平台。目前，网上查询到的相关教程都比较零碎，而且很多信息都已经过时。
+ ...  </p>
+              
+          </section>
+      </a>
+
+      <footer class="post-card-meta">
+          <img class="author-profile-image" src="https://wyshao.github.io/myblog/hugo-logo.png" alt="Author" />
+          <span class="post-card-author"><a href="https://wyshao.github.io/myblog/">Lily Chouchou</a></span>
+      </footer>
+    </div>
+</article>
+      
+    </div>
+  </div>
+</aside>
+
+<div class="floating-header">
+  <div class="floating-header-logo">
+    <a href="https://wyshao.github.io/">
+      <img src="https://wyshao.github.io/myblog/hugo-logo.png" alt="" />
+      <span></span>
+    </a>
+  </div>
+  <span class="floating-header-divider">&mdash;</span>
+  <div class="floating-header-title">ParaView初识与入门</div>
+  <div class="floating-header-share">
+    <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"/></svg>
+    </div>
+    
+    <a class="floating-header-share-tw" href="https://twitter.com/share?text=ParaView%e5%88%9d%e8%af%86%e4%b8%8e%e5%85%a5%e9%97%a8&amp;url=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2fparaview%25E5%2588%259D%25E8%25AF%2586%25E4%25B8%258E%25E5%2585%25A5%25E9%2597%25A8%2f"
+          onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"/></svg>
+      </a>
+      <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwyshao.github.io%2fmyblog%2fpost%2fparaview%25E5%2588%259D%25E8%25AF%2586%25E4%25B8%258E%25E5%2585%25A5%25E9%2597%25A8%2f"
+          onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"/></svg>
+      </a>
+  </div>
+
+  <progress class="progress" value="0">
+    <div class="progress-container">
+      <span class="progress-bar"></span>
+    </div>
+  </progress>
+</div>
+
+
+
+<footer class="site-footer outer">
+  <div class="site-footer-content inner">
+    <section class="copyright" style="line-height: 1.3em;">
+      <a href="https://wyshao.github.io/myblog/">Lily Chouchou</a> © 2018 <br>
+    </section>
+    <nav class="site-footer-nav">
+        <a href="https://wyshao.github.io/myblog/">Latest Posts</a>
+        <a href="https://www.facebook.com/fakeghost" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://twitter.com/faketryghost" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://github.com/Lily" target="_blank" rel="noopener">Github</a>
+        <a href="https://www.linkedin.com/in/Lily" target="_blank" rel="noopener">LinkedIn</a>
+        
+    </nav>
+  </div>
+</footer>
+
+</div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://wyshao.github.io/myblog/js/jquery.fitvids.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    <script>
+
+
+
+
+
+$(document).ready(function () {
+    
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    
+
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+</body></html>

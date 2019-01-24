@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on </title>
+    <link>https://wyshao.github.io/myblog/tags/python/</link>
+    <description>Recent content in Python on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 02 Jun 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://wyshao.github.io/myblog/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>无线Wi-Fi下玩转树莓派&#43;SG90舵机&#43;Python</title>
+      <link>https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/</link>
+      <pubDate>Mon, 02 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://wyshao.github.io/myblog/post/%E6%97%A0%E7%BA%BFwi-fi%E4%B8%8B%E7%8E%A9%E8%BD%AC%E6%A0%91%E8%8E%93%E6%B4%BE-sg90%E8%88%B5%E6%9C%BA-python/</guid>
+      <description>&lt;p&gt;&lt;font size =4&gt;这篇文章主要详细介绍了如何Wi-Fi连接树莓派并用Python和树莓派来控制SG90舵机。和之前&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;《从零开始利用AWS来快速搭建WordPresspi平台》&lt;/a&gt;的文章所提到一样，百度一下题目中三个关键词，“树莓派”，“SG90”，“Python&amp;rdquo;,”Wi-Fi“你会发现很多相关教程和经验。&lt;/font&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

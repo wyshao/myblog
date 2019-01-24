@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据分析 on </title>
+    <link>https://wyshao.github.io/myblog/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in 数据分析 on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 26 Sep 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://wyshao.github.io/myblog/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ParaView初识与入门</title>
+      <link>https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Fri, 26 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://wyshao.github.io/myblog/post/paraview%E5%88%9D%E8%AF%86%E4%B8%8E%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;&lt;font size =4&gt; ParaView 是一款开源的，跨平台的数据分析和可视化软件。它基于VTK（Visualiza
+-tion ToolKit）而开发的，能够对大批量数据进行分析及可视化。同时，支持并行计算，可以运行于分布式的大型计算机。此外，能与Python，ParaViewWeb等结合使用。下面主要来介绍这款软件相关使用方法。&lt;/font&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
